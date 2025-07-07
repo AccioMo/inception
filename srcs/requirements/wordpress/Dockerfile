@@ -16,6 +16,8 @@ RUN apk update && apk add --no-cache \
     php8-ctype \
     php8-mbstring \
     php8-gd \
+    php8-session \
+    php8-tokenizer \
     curl \
     mariadb-client
 
@@ -23,7 +25,7 @@ RUN curl -O https://wordpress.org/latest.tar.gz && \
     tar xf latest.tar.gz && \
     rm latest.tar.gz && \
     mv wordpress /var/www/html && \
-    chown -R mozeggaf:mozeggaf /var/www/html
+    chown -R nobody:nobody /var/www/html
 
 COPY conf/www.conf /etc/php8/php-fpm.d/www.conf
 COPY tools/configure.sh /tmp/configure.sh
