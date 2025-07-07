@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:latest
 
 RUN apk update && apk add --no-cache \
     php8 \
@@ -23,7 +23,7 @@ RUN curl -O https://wordpress.org/latest.tar.gz && \
     tar xf latest.tar.gz && \
     rm latest.tar.gz && \
     mv wordpress /var/www/html && \
-    chown -R nobody:nobody /var/www/html
+    chown -R mozeggaf:mozeggaf /var/www/html
 
 COPY conf/www.conf /etc/php8/php-fpm.d/www.conf
 COPY tools/configure.sh /tmp/configure.sh
