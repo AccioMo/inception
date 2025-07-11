@@ -12,4 +12,4 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
     curl -s https://api.wordpress.org/secret-key/1.1/salt/ >> /var/www/html/wp-config.php
 fi
 
-exec php-fpm8 -F
+exec php-fpm82 -F
