@@ -1,0 +1,15 @@
+
+# Ignore log files
+*.log
+
+# Ignore environment variables file
+.env
+
+# Ignore build directory
+/build/
+
+# Ignore temporary files
+*.tmp
+
+# Ignore volume directory
+/data

@@ -21,6 +21,6 @@ clean: down
 	@docker system prune -a --force
 
 fclean: clean
-	@sudo rm -rf /home/${USER}/data
+	@sudo rm -rf $(MARIADB_VOLUME) $(WORDPRESS_VOLUME)
 
 re: fclean all
