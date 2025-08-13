@@ -1,17 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mysql_install_db --user=mysql --datadir=/var/lib/mysql
+    echo "Initializing MariaDB database..."
+    mariadb-install-db --user=mysql --datadir=/var/lib/mysql --auth-root-authentication-method=normal
     
-    /usr/bin/mysqld --user=mysql --bootstrap << EOF
+    echo "Setting up database and users..."
+    /usr/sbin/mariadbd --user=mysql --bootstrap << EOF
 USE mysql;
 FLUSH PRIVILEGES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PASSWORD';
-CREATE DATABASE $DB_NAME;
-CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
+CREATE DATABASE IF NOT EXISTS $DB_NAME;
+CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 fi
 
-exec /usr/bin/mysqld --user=mysql
+echo "Starting MariaDB server..."
+exec /usr/sbin/mariadbd --user=mysql

@@ -1,15 +1,4 @@
 services:
-  nginx:
-    build:
-      context: ./requirements/nginx
-    container_name: nginx
-    depends_on:
-      - wordpress
-    ports:
-      - "443:443"
-    networks:
-      - inception_network
-    restart: always
 
   mariadb:
     build:
@@ -43,18 +32,32 @@ services:
       - inception_network
     restart: always
 
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception_network
+    restart: always
+
 volumes:
   mariadb_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/osboxes/data/mariadb
+      device: /home/osboxes/inception/data/mariadb # change later to be /home/osboxes/data/mariadb
       o: bind
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/osboxes/data/wordpress
+      device: /home/osboxes/inception/data/wordpress # change to be /home/osboxes/data/wordpress
       o: bind
 
 networks:

@@ -1,38 +1,31 @@
-FROM alpine:3.22
+FROM debian:bookworm
 
-RUN apk update && apk add --no-cache \
-    php82 \
-    php82-fpm \
-    php82-mysqli \
-    php82-json \
-    php82-openssl \
-    php82-curl \
-    php82-zlib \
-    php82-xml \
-    php82-phar \
-    php82-intl \
-    php82-dom \
-    php82-xmlreader \
-    php82-ctype \
-    php82-mbstring \
-    php82-gd \
-    php82-session \
-    php82-tokenizer \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    php8.2-fpm \
+    php8.2-mysqli \
+    php8.2-curl \
+    php8.2-gd \
+    php8.2-intl \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-zip \
+    mariadb-client \
     curl \
-    mariadb-client
+    ca-certificates \
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN curl -O https://wordpress.org/latest.tar.gz && \
     tar xf latest.tar.gz && \
     rm latest.tar.gz && \
     mkdir -p /var/www && \
     mv wordpress /var/www/html && \
-    chown -R nobody:nobody /var/www/html
+    chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
-COPY conf/www.conf /etc/php82/php-fpm.d/www.conf
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 COPY tools/configure.sh /tmp/configure.sh
-
 RUN chmod +x /tmp/configure.sh
 
 EXPOSE 9000
-
 ENTRYPOINT ["/tmp/configure.sh"]
