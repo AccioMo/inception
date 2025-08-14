@@ -1,14 +1,16 @@
 
-MARIADB_VOLUME=/home/osboxes/inception/data/mariadb
-WORDPRESS_VOLUME=/home/osboxes/inception/data/wordpress
+USER=osboxes
+
+MARIADB_VOLUME=/home/$(USER)/data/mariadb
+WORDPRESS_VOLUME=/home/$(USER)/data/wordpress
 
 .PHONY: all build up down clean fclean re
 
 all: build up
 
 build:
-	@mkdir -p $(MARIADB_VOLUME)
-	@mkdir -p $(WORDPRESS_VOLUME)
+	mkdir -p $(MARIADB_VOLUME)
+	mkdir -p $(WORDPRESS_VOLUME)
 	@docker compose -f ./srcs/docker-compose.yml build
 
 up:
@@ -21,6 +23,6 @@ clean: down
 	@docker system prune -a --force
 
 fclean: clean
-	@sudo rm -rf $(MARIADB_VOLUME) $(WORDPRESS_VOLUME)
+	sudo rm -rf $(MARIADB_VOLUME) $(WORDPRESS_VOLUME)
 
 re: fclean all

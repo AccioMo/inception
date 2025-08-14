@@ -3,6 +3,7 @@ services:
   mariadb:
     build:
       context: ./requirements/mariadb
+    image: mariadb
     container_name: mariadb
     env_file:
       - .env
@@ -15,6 +16,7 @@ services:
   wordpress:
     build:
       context: ./requirements/wordpress
+    image: wordpress
     container_name: wordpress
     depends_on:
       - mariadb
@@ -29,6 +31,7 @@ services:
   nginx:
     build:
       context: ./requirements/nginx
+    image: nginx
     container_name: nginx
     depends_on:
       - wordpress
@@ -45,13 +48,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/osboxes/inception/data/mariadb # change later to be /home/osboxes/data/mariadb
+      device: /home/$USER/data/mariadb
       o: bind
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/osboxes/inception/data/wordpress # change to be /home/osboxes/data/wordpress
+      device: /home/$USER/data/wordpress
       o: bind
 
 networks:
